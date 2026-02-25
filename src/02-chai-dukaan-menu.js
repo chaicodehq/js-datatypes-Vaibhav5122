@@ -28,5 +28,24 @@
  *   // => ""
  */
 export function formatChaiMenu(items) {
-  // Your code here
+  if (!Array.isArray(items) || items.length === 0) {
+    return ''
+  }
+  // return items.filter(f => f.price > 0 && typeof f.price === 'number' && typeof f.name === 'string' && f.name.length > 0)
+  //   // return `"${filtered.name.toUpperCase()} - Rs.${filtered.price}"`.join(' | ')
+  //   .filtered.map(item => `${item.name.toUpperCase()} - Rs.${item.price}"`).join(' | ')
+  // return items
+  //   .filter(item =>
+  //     typeof item.name === 'string' &&
+  //     item.name.length > 0 &&
+  //     typeof item.price === 'number' &&
+  //     item.price > 0
+  //   )
+  //   .map(item =>
+  //     `${item.name.toUpperCase()} - Rs.${item.price}`
+  //   )
+  //   .join(' | ')
+  const filterOut = items.filter((x) => x.price > 0 && typeof x.name === 'string' && x.name !== '').map((x) => `${x.name.toUpperCase()} - Rs.${x.price}`)
+  return filterOut.join(' | ')
+
 }

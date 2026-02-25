@@ -8,7 +8,7 @@
  *
  * formData object:
  *   { name, email, phone, age, pincode, state, agreeTerms }
- *
+ * 
  * Validation Rules:
  *   1. name: must be a non-empty trimmed string, min 2 chars, max 50 chars
  *      Error: "Name must be 2-50 characters"
@@ -63,4 +63,68 @@
  */
 export function validateForm(formData) {
   // Your code here
+  let errors = {}
+
+  if (!formData || typeof formData !== 'object') {
+    return { isValid: false, errors: { form: "Invalid form data" } }
+  }
+  const name = formData.name?.trim() ?? ''
+  if (typeof name !== 'string' || name.length < 2 || name.length > 50) {
+    errors.name = 'Name must be 2-50 characters'
+  }
+
+  const email = formData.email ?? ''
+
+  if (typeof email !== 'string') {
+    errors.email = 'Invalid email format'
+
+  }
+  // else if (!email.includes('@') || formData.email.indexOf('@') !== formData.email.lastIndexOf('@') || formData.email.lastIndexOf('.') <= formData.email.indexOf('@') + 1 || formData.email.lastIndexOf('.') === formData.email.length - 1) {
+  else {
+    const atIndex = email.indexOf('@')
+    const lastIndex = email.lastIndexOf('@')
+    const dotIndex = email.lastIndexOf('.')
+
+    if (atIndex <= 0 || atIndex !== lastIndex || dotIndex <= lastIndex + 1 || dotIndex === email.length - 1) {
+      errors.email = 'Invalid email format'
+    }
+  }
+  const phone = formData.phone?.trim() ?? ''
+  if (typeof phone !== 'string' ||
+    phone.length !== 10 ||
+    !'6789'.includes(phone[0]) ||
+    !phone.split('').every(ch => ch >= '0' && ch <= '9')) {
+
+    errors.phone = 'Invalid Indian phone number'
+  }
+
+  let age = formData.age
+  if (typeof age === 'string') {
+    age = parseInt(age, 10)
+  }
+  if (isNaN(age) || !Number.isInteger(age) || age < 16 || age > 100) {
+    errors.age = 'Age must be an integer between 16 and 100'
+  }
+
+  const pincode = formData.pincode ?? ''
+
+  if (typeof pincode !== 'string' || pincode.length !== 6 || pincode.startsWith('0') ||
+    !pincode.split('').every(ch => ch >= '0' && ch <= '9')) {
+    errors.pincode = 'Invalid Indian pincode'
+  }
+
+  const state = formData.state?.trim() ?? ''
+  if (state === '') {
+    errors.state = 'State is required'
+  }
+
+  if (!Boolean(formData.agreeTerms)) {
+    errors.agreeTerms = "Must agree to terms"
+  }
+
+  const isValid = Object.keys(errors).length === 0
+
+  return { isValid, errors }
+
 }
+

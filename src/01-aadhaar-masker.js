@@ -28,5 +28,22 @@
  *   // => "INVALID"
  */
 export function maskAadhaar(aadhaarNumber) {
-  // Your code here
+  if (typeof aadhaarNumber !== 'string' || aadhaarNumber.length !== 12 || !/^\d{12}$/.test(aadhaarNumber)) {
+    return 'INVALID'
+  }
+  // const newChar = 'X'
+  // const sliced = aadhaarNumber.slice(0, -4) + newChar
+  // const repeated = sliced.repeat(8)
+  // const slice1 = aadhaarNumber.slice(0, -8)
+  // const slice2 = aadhaarNumber.slice(4, -4)
+  // const slice3 = aadhaarNumber.slice(0, -1)
+  // newChar = 'X'
+  // dash = '-'
+  // const replaced = newChar.repeat(slice2.length)
+  // const replaced2 = newChar.repeat(4)
+  const masked = 'X'.repeat(8) + aadhaarNumber.slice(8)
+  const dashadd = masked.slice(0, 4) + '-' + masked.slice(4, 8) + '-' + masked.slice(8)
+  return dashadd
+
+
 }
